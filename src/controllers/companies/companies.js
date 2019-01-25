@@ -58,7 +58,18 @@ const controllers = {
       // console.log(exist)
     }
   },
+  replace: (req, res) => {
+    const queryId = req.params.id
+    const alreadyExist = companies.data.some(company => company.id == queryId)
 
+    if(alreadyExist) {
+      let companyModified = companies.data.filter(company => {
+        return company.id.toString() === queryId
+      })
+      companyModified[0].name = "Endeavor"
+      console.log(companyModified)
+    }
+  }
 }
 
 //exportar

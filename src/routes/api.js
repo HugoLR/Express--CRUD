@@ -11,6 +11,7 @@ app.get('/companies/:id', Companies.find)
 
 app.post('/companies', Companies.create)
 app.delete('/companies/:id', Companies.delete)
+app.put('/companies/:id', Companies.replace)
 // app.post
 //si exsite no hace nada -----> res---->company
 //si no existe que lo grabe en archivo
