@@ -29,12 +29,11 @@ const controllers = {
     const {id} = req.body
     const alreadyExist = companies.data.some(company => company.id == id)
     if(alreadyExist){
-      res.json({message:'Id already Exist',company:req.body})
+      res.status(400).json({message:'Id already Exist',company:req.body})
     }
     else {
       const newCompanies = [... companies.data, req.body]
       const json_Obj = JSON.stringify({data:newCompanies})
-      console.log(newCompanies)
       fs.writeFile('./data.json', json_Obj, (err) => {
          if(err) throw err;
       })
@@ -49,25 +48,28 @@ const controllers = {
       const exist = companies.data.filter(company => {
         return  company.id.toString() !== queryId
       })
+      res.status(400).json({message:'Id already Exist',company:exist})
       const json_Obj = JSON.stringify({data:exist})
       console.log(json_Obj)
       fs.writeFile('./data.json', json_Obj, (err) => {
          if(err) throw err;
       })
     } else {
-      // console.log(exist)
+      res.status(400).json({message:"It doesn't exist "})
     }
   },
-  replace: (req, res) => {
-    const queryId = req.params.id
-    const alreadyExist = companies.data.some(company => company.id == queryId)
+  replace: ({body,params}, res) => {
+    // const queryId = params.id
+    const alreadyExist = companies.data.some(company => company.id == params.id)
 
     if(alreadyExist) {
-      let companyModified = companies.data.filter(company => {
-        return company.id.toString() === queryId
+      const dataUpdated = companies.data.map(c => {
+        return (params.id == c.id) ? body : c;
       })
-      companyModified[0].name = "Endeavor"
-      console.log(companyModified)
+
+      res.status(200).json({message:dataUpdated})
+    } else {
+      res.status(400).json({message:"It doesn't exist "})
     }
   }
 }

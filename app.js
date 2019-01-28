@@ -51,6 +51,5 @@ app.use((err, request, response, next) => {
 
 app.listen(PORT, () => {
   const msg = chalk.blue(`Node Server is running on PORT: ${PORT}`);
-
   console.log(msg);
 });
